@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 
+<!-- utiliza la librería CDN -->
+<!-- el código encripta el mensaje con AES -->
+<!-- no utiliza la máxima seguridad, no utilizar para información crítica -->
+    
+<!-- es responsive -->
+<!-- puede copiar el mensaje cifrado -->
+<!-- si el mensaje cifrado está vacío no copia nada -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,30 +81,37 @@
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h2>Cifrador de Mensajes</h2>
-
+        <h2>Cifrar un mensaje con AES</h2>
         <div class="form-group">
-            <label for="password">Contraseña (Clave):</label>
-            <input type="text" id="password" placeholder="Escribe tu clave aquí...">
+            <label for="password">Contraseña:</label>
+            <input type="text" id="password" placeholder="Escribe tu contraseña...">
         </div>
-
         <div class="form-group">
-            <label for="mensaje">Mensaje Original:</label>
-            <textarea id="mensaje" placeholder="Escribe el texto grande aquí..."></textarea>
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" placeholder="Escribe el texto a cifrar..."></textarea>
         </div>
-
         <button onclick="cifrarMensaje()">🔒 Cifrar Mensaje</button>
-
         <div class="form-group">
             <label for="resultado">Mensaje Cifrado:</label>
-            <textarea id="resultado" readonly placeholder="El resultado aparecerá aquí..."></textarea>
+            <textarea id="resultado" readonly placeholder="El texto cifrado aparecerá aquí..."></textarea>
         </div>
+	<div class="form-group">
+		<button onclick="copiarTextoCifrado()">📋 Copiar texto cifrado</button>
+	</div>
     </div>
-
     <script>
-        function cifrarMensaje() {
+        
+	function copiarTextoCifrado(){
+
+	const mensaje_cifrado = document.getElementById("resultado").value
+	//console.log(texto);
+	if (mensaje_cifrado !== "") {
+	navigator.clipboard.writeText(mensaje_cifrado)
+		.then(() => { alert("Texto copiado, ahora puedes pegarlo en otra aplicación"); })
+		.catch(err => { console.log("Error al copiar: ", err); });
+}	}
+	function cifrarMensaje() {
             // 1. Obtener los valores de los campos
             const password = document.getElementById('password').value;
             const mensaje = document.getElementById('mensaje').value;
@@ -104,13 +119,13 @@
 
             // 2. Validar que no estén vacíos
             if (!password || !mensaje) {
-                alert("Por favor, introduce tanto la contraseña como el mensaje.");
+                alert("Por favor, introduce la contraseña y el mensaje.");
                 return;
             }
 
             try {
                 // 3. Cifrar usando AES (Advanced Encryption Standard)
-                // La librería CryptoJS se encarga de la complejidad matemática
+                // La librería CryptoJS s/Users/luist./Desktop/website/crypt/cifrar-mensaje.html se encarga de la complejidad matemática
                 const cifrado = CryptoJS.AES.encrypt(mensaje, password).toString();
 
                 // 4. Mostrar el resultado
